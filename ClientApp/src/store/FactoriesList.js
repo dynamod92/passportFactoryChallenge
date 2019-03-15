@@ -7,10 +7,14 @@ const initialState = {
   };
 
   export const actionCreators = {
-    getFactories: () => dispatch => {
+    getFactories: () => async (dispatch, getState) => {
+      const url = 'api/Controller/Factories';
+      const response = await fetch(url);
+      const factories = await response.json();
+
         dispatch({
           type: getFactories,
-          payload: [{factoryName: "Factory 1", id: 1},{factoryName: "Factory 2", id: 2}]
+          payload: [factories]
         })
     },
     addFactory: newFactory => dispatch => {

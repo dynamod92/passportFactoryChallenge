@@ -36,7 +36,7 @@ class Factory extends Component {
 
     render() {
         const childrenItems = this.props.childrenList
-            .filter(child => child.factoryId == this.props.id)
+            .filter(child => child.factoryId === this.props.id)
             .map(child => (
                 <div key={child.id}>
                     <Child childName={child.childName} factoryId={this.props.id} ></Child>
