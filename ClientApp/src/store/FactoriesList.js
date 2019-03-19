@@ -17,18 +17,38 @@ const initialState = {
         payload: factories
       })
     },
-    addFactory: newFactory => dispatch => {
+    addFactory: factoryData => async dispatch => {
+      const url = 'api/factory/AddFactory';
+      const response = await fetch(url,{
+        method: 'POST',
+        headers: {
+          'content-type': 'application/json'
+        },
+        body: JSON.stringify(factoryData)
+      });
+  
+      const newFactory = await response.json();
       dispatch({
         type: addFactory,
         payload: newFactory
       })
-  },
-    updateFactory: factoryData => dispatch => {
-        dispatch({
-          type: updateFactory,
-          payload: factoryData
-        })
-    }
+    },
+    updateFactory: factoryData => async dispatch => {
+      const url = 'api/factory/UpdateFactory';
+      const response = await fetch(url,{
+        method: 'POST',
+        headers: {
+          'content-type': 'application/json'
+        },
+        body: JSON.stringify(factoryData)
+      });
+  
+      const factory = await response.json();
+      dispatch({
+        type: updateFactory,
+        payload: factory
+      })
+    },
   };
 
 export const reducer = (state, action) => {

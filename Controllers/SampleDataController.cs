@@ -21,6 +21,33 @@ namespace update_dotnet_redux_proj.SQLite
             }
         }
 
+        [HttpPost("[action]")]
+        public async Task<IActionResult> AddFactory([FromBody]Factory newFactory)
+        {
+            Console.WriteLine("add");
+            using (var db = new FactoryContext())
+            {
+                db.Factories.Add(newFactory);
+                await db.SaveChangesAsync();
+
+                return Ok(newFactory);
+            }
+        }
+
+        [HttpPut("[action]")]
+
+        public async Task<IActionResult> UpdateFactory([FromBody]Factory factory)
+        {
+            Console.WriteLine("update");
+            using (var db = new FactoryContext())
+            {
+                db.Factories.Update(factory);
+                await db.SaveChangesAsync();
+
+                return Ok(db.Children.ToList());
+            }
+        }
+
         [HttpGet("[action]")]
         public IEnumerable<Child> Children(int startDateIndex)
         {

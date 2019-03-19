@@ -26,7 +26,7 @@ class FactoriesList extends Component {
     }
   }
   addFactory(){
-    const newFactory = {factoryName: "New Factory", id: 7};
+    const newFactory = {factoryName: "New Factory"};
 
     this.props.addFactory(newFactory);
   }
