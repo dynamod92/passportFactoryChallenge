@@ -19,7 +19,7 @@ namespace update_dotnet_redux_proj.SQLite
         public int id { get; set; }
         public string factoryName { get; set; }
 
-        public ICollection<Factory> Factories { get; set; }
+
     }
 
     public class Child

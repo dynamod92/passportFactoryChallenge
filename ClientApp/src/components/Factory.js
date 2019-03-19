@@ -9,7 +9,7 @@ class Factory extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            childName: '',
+            childName: this.props.childName,
             readOnly: true,
             factoryId: this.props.factoryId,
             editMode: "Edit"
@@ -29,8 +29,7 @@ class Factory extends Component {
     }
 
     newChild(){
-        const newChild = {childName: "new child", id: 7, factoryId: this.props.id};
-
+        const newChild = {childName: "new child",  factoryId: this.props.id};
         this.props.addChild(newChild);
     }
 

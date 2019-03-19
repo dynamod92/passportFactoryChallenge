@@ -4,40 +4,56 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
-namespace update_dotnet_redux_proj.Controllers
+
+namespace update_dotnet_redux_proj.SQLite
 {
     [Route("api/[controller]")]
-    public class SampleDataController : Controller
+    public class FactoryController : Controller
     {
-        private static string[] Summaries = new[]
-        {
-            "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-        };
 
         [HttpGet("[action]")]
-        public IEnumerable<WeatherForecast> WeatherForecasts(int startDateIndex)
+        public IEnumerable<Factory> Factories(int startDateIndex)
         {
-            var rng = new Random();
-            return Enumerable.Range(1, 5).Select(index => new WeatherForecast
+            using (var db = new FactoryContext())
             {
-                DateFormatted = DateTime.Now.AddDays(index + startDateIndex).ToString("d"),
-                TemperatureC = rng.Next(-20, 55),
-                Summary = Summaries[rng.Next(Summaries.Length)]
-            });
+               return 
+                db.Factories.ToList();
+            }
         }
 
-        public class WeatherForecast
+        [HttpGet("[action]")]
+        public IEnumerable<Child> Children(int startDateIndex)
         {
-            public string DateFormatted { get; set; }
-            public int TemperatureC { get; set; }
-            public string Summary { get; set; }
-
-            public int TemperatureF
+            using (var db = new FactoryContext())
             {
-                get
-                {
-                    return 32 + (int)(TemperatureC / 0.5556);
-                }
+               return 
+                db.Children.ToList();
+            }
+        }
+
+        [HttpPost("[action]")]
+        public async Task<IActionResult> AddChild([FromBody]Child newChild)
+        {
+            Console.WriteLine("add");
+            using (var db = new FactoryContext())
+            {
+                db.Children.Add(newChild);
+                await db.SaveChangesAsync();
+
+                return Ok(newChild);
+            }
+        }
+
+        [HttpPut("[action]")]
+        public async Task<IActionResult> UpdateChild([FromBody]Child child)
+        {
+            Console.WriteLine("update");
+            using (var db = new FactoryContext())
+            {
+                db.Children.Update(child);
+                await db.SaveChangesAsync();
+
+                return Ok(db.Children.ToList());
             }
         }
     }

@@ -7,23 +7,48 @@ const initialState = {
   };
 
 export const actionCreators = {
-  getChildren: list => dispatch => {
+  getChildren: () => async dispatch => {
+
+    const url = 'api/factory/Children';
+    const response = await fetch(url);
+    const children = await response.json();
       dispatch({
         type: getChildren,
-        payload: [{childName: "test 3", id: 3, factoryId: 2}]
+        payload: children
       })
   },
-  addChild: childData => dispatch => {
+  addChild: childData => async dispatch => {
+    const url = 'api/factory/AddChild';
+    const response = await fetch(url,{
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json'
+      },
+      body: JSON.stringify(childData)
+    });
+
+    const newChild = await response.json();
     console.log(childData)
     dispatch({
       type: addChild,
-      payload: childData
+      payload: newChild
     })
 },
-  updateChild: childData => dispatch => {
+  updateChild: childData => async dispatch => {
+    const url = 'api/factory/UpdateChild';
+    const response = await fetch(url,{
+      method: 'PUT',
+      headers: {
+        'content-type': 'application/json'
+      },
+      body: JSON.stringify(childData)
+    });
+
+    const childrenList = await response.json();
+    console.log(childrenList)
       dispatch({
         type: updateChild,
-        payload: childData
+        payload: childrenList
       })
   }
 };
@@ -36,7 +61,7 @@ export const reducer = (state, action) => {
         case addChild:
             return { ...state, newChild: action.payload};
         case updateChild:
-            return { ...state, childrenList: [action.payload]};
+            return { ...state, childrenList: action.payload};
         default:
     }
   return state;

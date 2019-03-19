@@ -28,7 +28,7 @@ class Child extends Component {
 
             const updatedChild = {
                 childName: this.state.childName,
-                id: 5,
+                id: this.state.id,
                 factoryId: this.props.factoryId
             };
             this.props.updateChild(updatedChild);
