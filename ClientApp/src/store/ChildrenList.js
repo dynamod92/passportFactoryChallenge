@@ -28,7 +28,7 @@ export const actionCreators = {
     });
 
     const newChild = await response.json();
-    console.log(childData)
+
     dispatch({
       type: addChild,
       payload: newChild
@@ -45,12 +45,12 @@ export const actionCreators = {
     });
 
     const childrenList = await response.json();
-    console.log(childrenList)
+
       dispatch({
         type: updateChild,
         payload: childrenList
       })
-  }
+  }  
 };
 
 export const reducer = (state, action) => {

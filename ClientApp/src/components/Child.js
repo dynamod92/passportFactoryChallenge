@@ -28,7 +28,7 @@ class Child extends Component {
 
             const updatedChild = {
                 childName: this.state.childName,
-                id: this.state.id,
+                id: this.props.id,
                 factoryId: this.props.factoryId
             };
             this.props.updateChild(updatedChild);
@@ -42,7 +42,7 @@ class Child extends Component {
     render() {
         return (
           <div>
-           <input type="text" readOnly={this.state.readOnly} name="childName" value={this.state.childName} onChange={this.onChange}/> 
+           <input type="text" readOnly={this.state.readOnly} name="childName" key={this.state.id} value={this.state.childName} onChange={this.onChange}/> 
             <button type="button" onClick={this.editChild} className="btn btn-default btn-sm">
                 {this.state.editMode}
             </button>

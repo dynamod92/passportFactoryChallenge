@@ -34,22 +34,19 @@ class FactoriesList extends Component {
   render() {
     const factoryItems = this.props.factoriesList.map(factory => (
       <div key={factory.id}>
-        <Factory name={factory.factoryName} id={factory.id}></Factory>
+        <Factory factoryName={factory.factoryName} id={factory.id} updateFactory={this.props.updateFactory}></Factory>
       </div>
     ));
 
     return (
       
       <div>
-        <details>
+        <details open> 
           <summary>Root</summary>
-          <details>
+          <details open>
             <summary>Factories
               <button type="button" className="btn btn-default btn-sm" onClick={this.addFactory}>
                 Add
-              </button>
-              <button type="button" className="btn btn-default btn-sm">
-                Edit
               </button>
             </summary>
             {factoryItems}

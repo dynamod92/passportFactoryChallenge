@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 
-namespace update_dotnet_redux_proj.SQLite
+namespace update_dotnet_redux_proj
 {
     public class FactoryContext : DbContext
     {

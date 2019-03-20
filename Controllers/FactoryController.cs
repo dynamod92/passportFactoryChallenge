@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
 
-namespace update_dotnet_redux_proj.SQLite
+namespace update_dotnet_redux_proj
 {
     [Route("api/[controller]")]
     public class FactoryController : Controller
@@ -44,7 +44,7 @@ namespace update_dotnet_redux_proj.SQLite
                 db.Factories.Update(factory);
                 await db.SaveChangesAsync();
 
-                return Ok(db.Children.ToList());
+                return Ok(db.Factories.ToList());
             }
         }
 

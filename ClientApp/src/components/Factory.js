@@ -12,19 +12,27 @@ class Factory extends Component {
             childName: this.props.childName,
             readOnly: true,
             factoryId: this.props.factoryId,
+            factoryName: this.props.factoryName,
             editMode: "Edit"
           };
    
         this.newChild = this.newChild.bind(this);
-
+        this.onChange = this.onChange.bind(this);
+        this.editFactory = this.editFactory.bind(this);
       }
+      
     componentWillMount() {
         this.props.getChildren();
     }
 
+    onChange(e) {
+        this.setState({ [e.target.name]: e.target.value });
+    }
+
     componentWillReceiveProps(nextProps) {
         if (nextProps.newChild) {
-          this.props.childrenList.unshift(nextProps.newChild);
+            if(nextProps.newChild.factoryId == this.props.id)
+                this.props.childrenList.push(nextProps.newChild);
         }
     }
 
@@ -33,21 +41,41 @@ class Factory extends Component {
         this.props.addChild(newChild);
     }
 
-    render() {
+    editFactory(){
+        if(this.state.editMode === "Save"){
+            this.setState({ readOnly: !this.state.readOnly, editMode: "Edit" });
+
+            const updatedFactory = {
+                factoryName: this.state.factoryName,
+                id: this.props.id
+            };
+            this.props.updateFactory(updatedFactory);
+        }
+        else{
+            this.setState({ readOnly: !this.state.readOnly,
+            editMode: "Save" });
+        }
+    }
+
+    render() {       
         const childrenItems = this.props.childrenList
             .filter(child => child.factoryId === this.props.id)
             .map(child => (
                 <div key={child.id}>
-                    <Child childName={child.childName} factoryId={this.props.id} ></Child>
+                    <Child id={child.id} childName={child.childName} factoryId={this.props.id} ></Child>
                 </div>
             ));
         
         return (
           <div>
             <details>
-                <summary>{this.props.name}
+                <summary>{this.props.factoryName} 
                     <button type="button" className="btn btn-default btn-sm" onClick={this.newChild}>
-                    <span className="glyphicon glyphicon-plus" ></span>Add Child Node
+                    Add Child
+                    </button>
+                    <input type="text" readOnly={this.state.readOnly} name="factoryName" key={this.state.id} value={this.state.factoryName} onChange={this.onChange}/>
+                    <button type="button" className="btn btn-default btn-sm" onClick={this.editFactory}>
+                        {this.state.editMode}
                     </button>
                 </summary>
                 {childrenItems}

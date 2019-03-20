@@ -8,7 +8,7 @@ const initialState = {
 
   export const actionCreators = {
     getFactories: () => async dispatch => {
-      const url = 'api/factory/Factories';
+      const url = 'api/factory';
       const response = await fetch(url);
       const factories = await response.json();
 
@@ -18,7 +18,7 @@ const initialState = {
       })
     },
     addFactory: factoryData => async dispatch => {
-      const url = 'api/factory/AddFactory';
+      const url = 'api/factory';
       const response = await fetch(url,{
         method: 'POST',
         headers: {
@@ -34,21 +34,21 @@ const initialState = {
       })
     },
     updateFactory: factoryData => async dispatch => {
-      const url = 'api/factory/UpdateFactory';
+      const url = 'api/factory';
       const response = await fetch(url,{
-        method: 'POST',
+        method: 'PUT',
         headers: {
           'content-type': 'application/json'
         },
         body: JSON.stringify(factoryData)
       });
-  
-      const factory = await response.json();
+      
+      const factoryList = await response.json();
       dispatch({
         type: updateFactory,
-        payload: factory
+        payload: factoryList
       })
-    },
+    }
   };
 
 export const reducer = (state, action) => {
@@ -60,7 +60,7 @@ export const reducer = (state, action) => {
         case addFactory:
           return { ...state, newFactory: action.payload};
         case updateFactory:
-          return { ...state, factoriesList: [action.payload]};
+          return { ...state, factoriesList: action.payload};
         default:
     }
   return state;

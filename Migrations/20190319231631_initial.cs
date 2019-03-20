@@ -2,7 +2,7 @@
 
 namespace update_dotnet_redux_proj.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -26,24 +26,12 @@ namespace update_dotnet_redux_proj.Migrations
                 {
                     id = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    factoryName = table.Column<string>(nullable: true),
-                    Factoryid = table.Column<int>(nullable: true)
+                    factoryName = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Factories", x => x.id);
-                    table.ForeignKey(
-                        name: "FK_Factories_Factories_Factoryid",
-                        column: x => x.Factoryid,
-                        principalTable: "Factories",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Restrict);
                 });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Factories_Factoryid",
-                table: "Factories",
-                column: "Factoryid");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
