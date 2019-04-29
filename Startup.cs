@@ -45,6 +45,7 @@ namespace update_dotnet_redux_proj
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseWebSockets();
             app.UseSpaStaticFiles();
 
             app.UseMvc(routes =>

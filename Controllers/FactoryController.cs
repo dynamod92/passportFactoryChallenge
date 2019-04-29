@@ -1,9 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.WebSockets;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-
+using System.Threading;
+using Microsoft.AspNetCore.Http;
+using System.Text;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace update_dotnet_redux_proj
 {
@@ -12,14 +17,38 @@ namespace update_dotnet_redux_proj
     {
 
         [HttpGet("[action]")]
-        public IEnumerable<Factory> Factories(int startDateIndex)
+
+        public async Task GetFactories()
         {
-            using (var db = new FactoryContext())
+            var context = ControllerContext.HttpContext;
+            var isSocketRequest = context.WebSockets.IsWebSocketRequest;
+
+            if (isSocketRequest)
             {
-               return 
-                db.Factories.ToList();
+                WebSocket webSocket = await context.WebSockets.AcceptWebSocketAsync();
+                await Factories(context, webSocket);
+            }
+            else
+            {
+                context.Response.StatusCode = 400;
             }
         }
+        public async Task<IActionResult> Factories(HttpContext context, WebSocket webSocket)
+        {            
+            using (var db = new FactoryContext())
+            {
+               var factories = db.Factories.ToList();
+
+                var binFormatter = new BinaryFormatter();
+                var mStream = new MemoryStream();
+                binFormatter.Serialize(mStream, factories);
+
+                var arraySegment = new ArraySegment<byte>(mStream.ToArray());
+                await webSocket.SendAsync(arraySegment, WebSocketMessageType.Text, true, CancellationToken.None);
+               return Ok(factories);
+            }
+        }
+        
 
         [HttpPost("[action]")]
         public async Task<IActionResult> AddFactory([FromBody]Factory newFactory)
